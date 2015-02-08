@@ -19,11 +19,12 @@ resumableUpload.prototype.initUpload = function(callback, errorback) {
 	var self = this;
 
 	var options = {
-		url:	'https://www.googleapis.com/upload/youtube/v3/videos?uploadType=resumable&part=snippet,status,contentDetails',
+	  url: 'https://www.googleapis.com/upload/youtube/v3/videos?uploadType=resumable&part=snippet,status,contentDetails',
+    encoding: 'utf8',
 		headers: {
 		  'Host':			'www.googleapis.com',
 		  'Authorization':		'Bearer ' + this.tokens.access_token,
-		  'Content-Length':		new Buffer(JSON.stringify(this.metadata)).length,
+		  'Content-Length':		new Buffer(JSON.stringify(this.metadata),'utf8').length,
 		  'Content-Type':		'application/json',
 		  'X-Upload-Content-Length':	fs.statSync(this.filepath).size,
 		  'X-Upload-Content-Type': 	mime.lookup(this.filepath)
@@ -59,7 +60,8 @@ resumableUpload.prototype.initUpload = function(callback, errorback) {
 resumableUpload.prototype.putUpload = function(callback, errorback) {
 	var self = this;
 	var options = {
-		url: self.location, //self.location becomes the Google-provided URL to PUT to
+	  url: self.location, //self.location becomes the Google-provided URL to PUT to
+    encoding: 'utf8',
 		headers: {
 		  'Authorization':	'Bearer ' + self.tokens.access_token,
 		  'Content-Length':	fs.statSync(self.filepath).size - self.byteCount,
@@ -106,7 +108,8 @@ resumableUpload.prototype.putUpload = function(callback, errorback) {
 resumableUpload.prototype.startMonitoring = function() {
 	var self = this;
 	var options = {
-		url: self.location,
+	  url: self.location,
+    encoding: 'utf8',
 		headers: {
 		  'Authorization':	'Bearer ' + self.tokens.access_token,
 		  'Content-Length':	0,
@@ -131,6 +134,7 @@ resumableUpload.prototype.getProgress = function() {
 	var self = this;
 	var options = {
 		url: self.location,
+		encoding: 'utf8',
 		headers: {
 		  'Authorization':	'Bearer ' + self.tokens.access_token,
 		  'Content-Length':	0,
